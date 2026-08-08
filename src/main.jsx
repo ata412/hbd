@@ -78,7 +78,7 @@ function CakeScene() {
           ))}
         </div>
         <div className="opening-copy">
-          <p>08 · 08 · วันนี้ของมะหมี่</p>
+          <p>09 · 08 · วันนี้ของมะหมี่</p>
           <h1>มีอะไรจะให้ดู<br /><em>เลื่อนลงช้า ๆ นะ</em></h1>
         </div>
 
