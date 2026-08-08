@@ -76,7 +76,8 @@ button { font:inherit; touch-action:manipulation; -webkit-tap-highlight-color:tr
 .chapter h2 .wrong-name { color:#8d718e; }
 .chapter h2 .correct-name { color:#be5f7c; }
 .chapter h2 .oops-name { top:.08em; color:#7f6682; font-family:'IBM Plex Sans Thai',sans-serif; font-size:.68em; font-weight:500; will-change:transform,opacity; }
-.typing-cursor { position:absolute; left:0; top:.12em; width:3px; height:.78em; border-radius:4px; background:#be5f7c; animation:cursorBlink .62s steps(1) infinite; }
+.cursor-track { position:absolute; z-index:4; left:0; top:0; display:block; width:0; height:1em; overflow:visible; pointer-events:none; }
+.typing-cursor { position:absolute; right:-4px; top:.12em; width:3px; height:.78em; border-radius:4px; background:#be5f7c; animation:cursorBlink .62s steps(1) infinite; }
 @keyframes cursorBlink { 50% { opacity:.12; } }
 .chapter:nth-child(even) .chapter-inner { text-align:right; }
 

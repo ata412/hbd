@@ -105,7 +105,7 @@ function CakeScene() {
 
 const chapters = [
   { n: '01', small: 'เอ๊ะ เดี๋ยวก่อนนะ', text: <>วันนี้วันเกิดแก<br /><span className="accent-text">ชะม้ายยยย</span></> },
-  { n: '02', small: 'งั้นต้องพูดดัง ๆ แล้ว', text: <>แฮปปี้เบิ้ดเดนะคับ<br /><span className="name-correction" aria-label="บะหมี่ เอ้ยย มะหมี่"><span className="wrong-name">บะหมี่</span><span className="oops-name">เอ้ยย!</span><span className="correct-name">มะหมี่</span><i className="typing-cursor" /></span></> },
+  { n: '02', small: 'งั้นต้องพูดดัง ๆ แล้ว', text: <>แฮปปี้เบิ้ดเดนะคับ<br /><span className="name-correction" aria-label="บะหมี่ เอ้ยย มะหมี่"><span className="wrong-name">บะหมี่</span><span className="oops-name">เอ้ยย!</span><span className="correct-name">มะหมี่</span><i className="cursor-track" aria-hidden="true"><i className="typing-cursor" /></i></span></> },
   { n: '03', small: 'ถึงวันนี้จะเงียบไปนิด', text: <>แกหายไป<br /><span className="accent-text">นานเยยยย</span></> },
   { n: '04', small: 'แต่อยากให้รู้ไว้นะ', text: <>มีความสุขมาก ๆ<br />ยิ้มเยอะ ๆ <span className="accent-text">กว้าง ๆ เลยนะ</span></> },
 ];
@@ -138,26 +138,29 @@ function MessageStory() {
       const wrongName = nameStage.querySelector('.wrong-name');
       const oopsName = nameStage.querySelector('.oops-name');
       const correctName = nameStage.querySelector('.correct-name');
+      const cursorTrack = nameStage.querySelector('.cursor-track');
       const cursor = nameStage.querySelector('.typing-cursor');
       const nameChapter = nameStage.closest('.chapter');
-      const wrongWidth = wrongName.scrollWidth;
-      const correctWidth = correctName.scrollWidth;
+      const wrongWidth = () => Math.ceil(wrongName.getBoundingClientRect().width || wrongName.scrollWidth);
+      const correctWidth = () => Math.ceil(correctName.getBoundingClientRect().width || correctName.scrollWidth);
 
       gsap.set(wrongName, { clipPath: 'inset(0 100% 0 0)', opacity: 1 });
       gsap.set(oopsName, { opacity: 0, scale: 0.55, rotate: -9, y: 18 });
       gsap.set(correctName, { clipPath: 'inset(0 100% 0 0)', opacity: 0 });
-      gsap.set(cursor, { x: 0, opacity: 0 });
+      gsap.set(cursorTrack, { width: 0 });
+      gsap.set(cursor, { opacity: 0 });
       const nameTimeline = gsap.timeline({ paused: true })
         .set(wrongName, { clipPath: 'inset(0 100% 0 0)', opacity: 1 })
         .set(oopsName, { opacity: 0, scale: 0.55, rotate: -9, y: 18 })
         .set(correctName, { clipPath: 'inset(0 100% 0 0)', opacity: 0 })
-        .set(cursor, { x: 0, opacity: 0 })
+        .set(cursorTrack, { width: 0 })
+        .set(cursor, { opacity: 0 })
         .set(cursor, { opacity: 1 })
         .to(wrongName, { clipPath: 'inset(0 0% 0 0)', duration: 0.85, ease: 'steps(4)' })
-        .to(cursor, { x: wrongWidth, duration: 0.85, ease: 'steps(4)' }, '<')
+        .to(cursorTrack, { width: wrongWidth, duration: 0.85, ease: 'steps(4)' }, '<')
         .to({}, { duration: 0.7 })
         .to(wrongName, { clipPath: 'inset(0 100% 0 0)', duration: 0.62, ease: 'steps(4)' })
-        .to(cursor, { x: 0, duration: 0.62, ease: 'steps(4)' }, '<')
+        .to(cursorTrack, { width: 0, duration: 0.62, ease: 'steps(4)' }, '<')
         .set(wrongName, { opacity: 0 })
         .set(cursor, { opacity: 0 })
         .to(oopsName, { opacity: 1, scale: 1, rotate: 3, y: 0, duration: 0.42, ease: 'back.out(2.4)' })
@@ -166,7 +169,7 @@ function MessageStory() {
         .set(correctName, { opacity: 1 })
         .set(cursor, { opacity: 1 })
         .to(correctName, { clipPath: 'inset(0 0% 0 0)', duration: 1.05, ease: 'steps(6)' })
-        .to(cursor, { x: correctWidth, duration: 1.05, ease: 'steps(6)' }, '<')
+        .to(cursorTrack, { width: correctWidth, duration: 1.05, ease: 'steps(6)' }, '<')
         .to(cursor, { opacity: 0, duration: 0.25, repeat: 3, yoyo: true })
         .set(cursor, { opacity: 0 });
 
