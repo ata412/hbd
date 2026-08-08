@@ -139,21 +139,24 @@ function MessageStory() {
       const oopsName = nameStage.querySelector('.oops-name');
       const correctName = nameStage.querySelector('.correct-name');
       const cursor = nameStage.querySelector('.typing-cursor');
+      const nameChapter = nameStage.closest('.chapter');
       const wrongWidth = wrongName.scrollWidth;
       const correctWidth = correctName.scrollWidth;
 
-      gsap.set(wrongName, { clipPath: 'inset(-20% 100% -25% 0)', opacity: 1 });
+      gsap.set(wrongName, { clipPath: 'inset(0 100% 0 0)', opacity: 1 });
       gsap.set(oopsName, { opacity: 0, scale: 0.55, rotate: -9, y: 18 });
-      gsap.set(correctName, { clipPath: 'inset(-20% 100% -25% 0)', opacity: 0 });
+      gsap.set(correctName, { clipPath: 'inset(0 100% 0 0)', opacity: 0 });
       gsap.set(cursor, { x: 0, opacity: 0 });
-      gsap.timeline({
-        scrollTrigger: { trigger: nameStage, start: isMobile ? 'top 86%' : 'top 58%', once: true },
-      })
+      const nameTimeline = gsap.timeline({ paused: true })
+        .set(wrongName, { clipPath: 'inset(0 100% 0 0)', opacity: 1 })
+        .set(oopsName, { opacity: 0, scale: 0.55, rotate: -9, y: 18 })
+        .set(correctName, { clipPath: 'inset(0 100% 0 0)', opacity: 0 })
+        .set(cursor, { x: 0, opacity: 0 })
         .set(cursor, { opacity: 1 })
-        .to(wrongName, { clipPath: 'inset(-20% 0% -25% 0)', duration: 0.85, ease: 'steps(4)' })
+        .to(wrongName, { clipPath: 'inset(0 0% 0 0)', duration: 0.85, ease: 'steps(4)' })
         .to(cursor, { x: wrongWidth, duration: 0.85, ease: 'steps(4)' }, '<')
         .to({}, { duration: 0.7 })
-        .to(wrongName, { clipPath: 'inset(-20% 100% -25% 0)', duration: 0.62, ease: 'steps(4)' })
+        .to(wrongName, { clipPath: 'inset(0 100% 0 0)', duration: 0.62, ease: 'steps(4)' })
         .to(cursor, { x: 0, duration: 0.62, ease: 'steps(4)' }, '<')
         .set(wrongName, { opacity: 0 })
         .set(cursor, { opacity: 0 })
@@ -162,9 +165,17 @@ function MessageStory() {
         .to(oopsName, { opacity: 0, scale: 0.72, rotate: 8, y: -14, duration: 0.28, ease: 'power2.in' })
         .set(correctName, { opacity: 1 })
         .set(cursor, { opacity: 1 })
-        .to(correctName, { clipPath: 'inset(-20% 0% -25% 0)', duration: 1.05, ease: 'steps(6)' })
+        .to(correctName, { clipPath: 'inset(0 0% 0 0)', duration: 1.05, ease: 'steps(6)' })
         .to(cursor, { x: correctWidth, duration: 1.05, ease: 'steps(6)' }, '<')
         .to(cursor, { opacity: 0, duration: 0.25, repeat: 3, yoyo: true });
+
+      ScrollTrigger.create({
+        trigger: nameChapter,
+        start: isMobile ? 'top 82%' : 'top 58%',
+        onEnter: () => nameTimeline.restart(),
+        onEnterBack: () => nameTimeline.restart(),
+        onLeaveBack: () => nameTimeline.pause(0),
+      });
       gsap.utils.toArray('.paper-line').forEach((el, index) => {
         const direction = index % 2 === 0 ? -1 : 1;
         const wave = gsap.timeline({
