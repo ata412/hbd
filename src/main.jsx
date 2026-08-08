@@ -208,6 +208,28 @@ function MessageStory() {
             ease: 'sine.out',
           });
       });
+
+      gsap.to('.promise-orbit', {
+        rotation: 360,
+        duration: 22,
+        ease: 'none',
+        repeat: -1,
+        transformOrigin: '50% 50%',
+      });
+
+      gsap.timeline({ repeat: -1, repeatDelay: 0.28 })
+        .to('.anatomy-heart', { scale: 1.13, rotation: 0, duration: 0.12, ease: 'power2.out' })
+        .to('.anatomy-heart', { scale: 1.01, rotation: -2, duration: 0.1, ease: 'power2.in' })
+        .to('.anatomy-heart', { scale: 1.08, rotation: 0, duration: 0.1, ease: 'power2.out' })
+        .to('.anatomy-heart', { scale: 1, rotation: -2, duration: 0.2, ease: 'power2.inOut' })
+        .to({}, { duration: 0.45 });
+
+      gsap.timeline({ repeat: -1, repeatDelay: 0.27 })
+        .fromTo('.heart-pulse',
+          { opacity: 0, scale: 0.65 },
+          { opacity: 0.65, scale: 1.05, duration: 0.18, ease: 'power1.out' })
+        .to('.heart-pulse', { opacity: 0, scale: 2.15, duration: 0.55, ease: 'power2.out' })
+        .to({}, { duration: 0.34 });
     }, ref);
     return () => ctx.revert();
   }, []);
