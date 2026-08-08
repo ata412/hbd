@@ -114,10 +114,25 @@ function MessageStory() {
   const ref = useRef(null);
   useEffect(() => {
     const ctx = gsap.context(() => {
+      const isMobile = window.matchMedia('(max-width: 650px)').matches;
       gsap.utils.toArray('.chapter').forEach((el) => {
         gsap.fromTo(el.querySelectorAll('.chapter-no, .eyebrow, h2'),
           { y: 70, opacity: 0 },
-          { y: 0, opacity: 1, stagger: 0.12, duration: 1.1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 72%', end: 'top 35%', scrub: 0.7 } });
+          {
+            y: 0,
+            opacity: 1,
+            stagger: isMobile ? 0.07 : 0.12,
+            duration: isMobile ? 0.58 : 1.1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: el,
+              start: isMobile ? 'top 94%' : 'top 72%',
+              end: isMobile ? undefined : 'top 35%',
+              scrub: isMobile ? false : 0.7,
+              toggleActions: isMobile ? 'play none none reverse' : undefined,
+              fastScrollEnd: true,
+            },
+          });
       });
       const nameStage = ref.current.querySelector('.name-correction');
       const wrongName = nameStage.querySelector('.wrong-name');
@@ -132,7 +147,7 @@ function MessageStory() {
       gsap.set(correctName, { clipPath: 'inset(-20% 100% -25% 0)', opacity: 0 });
       gsap.set(cursor, { x: 0, opacity: 0 });
       gsap.timeline({
-        scrollTrigger: { trigger: nameStage, start: 'top 58%', once: true },
+        scrollTrigger: { trigger: nameStage, start: isMobile ? 'top 86%' : 'top 58%', once: true },
       })
         .set(cursor, { opacity: 1 })
         .to(wrongName, { clipPath: 'inset(-20% 0% -25% 0)', duration: 0.85, ease: 'steps(4)' })
@@ -155,9 +170,11 @@ function MessageStory() {
         const wave = gsap.timeline({
           scrollTrigger: {
             trigger: el,
-            start: 'top 96%',
-            end: 'top 48%',
-            scrub: 1.15,
+            start: isMobile ? 'top 96%' : 'top 96%',
+            end: isMobile ? undefined : 'top 48%',
+            scrub: isMobile ? false : 1.15,
+            toggleActions: isMobile ? 'play none none reverse' : undefined,
+            fastScrollEnd: true,
           },
         });
         wave
@@ -177,7 +194,7 @@ function MessageStory() {
               rotate: direction * -1.8,
               scale: 0.98,
               filter: 'blur(3px)',
-              duration: 0.58,
+              duration: isMobile ? 0.3 : 0.58,
               ease: 'sine.inOut',
             })
           .to(el, {
@@ -187,7 +204,7 @@ function MessageStory() {
             rotate: 0,
             scale: 1,
             filter: 'blur(0px)',
-            duration: 0.42,
+            duration: isMobile ? 0.26 : 0.42,
             ease: 'sine.out',
           });
       });
@@ -370,6 +387,7 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const isMobile = window.matchMedia('(max-width: 650px)').matches;
     const targets = gsap.utils.toArray([
       '.promise > p',
       '.promise h2',
@@ -381,6 +399,7 @@ function App() {
     const ctx = gsap.context(() => {
       targets.forEach((element, index) => {
         const isFinalNote = element.matches('.finale small');
+        const playImmediately = isMobile || isFinalNote;
         gsap.fromTo(element,
           {
             y: isFinalNote ? 24 : 72,
@@ -396,14 +415,15 @@ function App() {
             rotateX: 0,
             opacity: 1,
             filter: 'blur(0px)',
-            duration: isFinalNote ? 0.85 : 1,
+            duration: isMobile ? 0.58 : (isFinalNote ? 0.85 : 1),
             ease: 'power3.out',
             scrollTrigger: {
               trigger: element,
-              start: isFinalNote ? 'top 98%' : 'top 88%',
-              end: isFinalNote ? undefined : 'top 60%',
-              scrub: isFinalNote ? false : 0.65,
-              toggleActions: isFinalNote ? 'play none none reverse' : undefined,
+              start: playImmediately ? 'top 97%' : 'top 88%',
+              end: playImmediately ? undefined : 'top 60%',
+              scrub: playImmediately ? false : 0.65,
+              toggleActions: playImmediately ? 'play none none reverse' : undefined,
+              fastScrollEnd: true,
             },
           });
       });
