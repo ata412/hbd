@@ -167,7 +167,8 @@ function MessageStory() {
         .set(cursor, { opacity: 1 })
         .to(correctName, { clipPath: 'inset(0 0% 0 0)', duration: 1.05, ease: 'steps(6)' })
         .to(cursor, { x: correctWidth, duration: 1.05, ease: 'steps(6)' }, '<')
-        .to(cursor, { opacity: 0, duration: 0.25, repeat: 3, yoyo: true });
+        .to(cursor, { opacity: 0, duration: 0.25, repeat: 3, yoyo: true })
+        .set(cursor, { opacity: 0 });
 
       ScrollTrigger.create({
         trigger: nameChapter,
